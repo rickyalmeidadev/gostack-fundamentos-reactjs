@@ -12,7 +12,7 @@ import formatValue from '../../utils/formatValue';
 
 import { Container, CardContainer, Card, TableContainer } from './styles';
 
-interface Transaction {
+type Transaction = {
   id: string;
   title: string;
   value: number;
@@ -21,23 +21,25 @@ interface Transaction {
   type: 'income' | 'outcome';
   category: { title: string };
   created_at: Date;
-}
+};
 
-interface Balance {
+type Balance = {
   income: string;
   outcome: string;
   total: string;
-}
+};
 
 const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [balance, setBalance] = useState<Balance>({} as Balance);
 
   useEffect(() => {
-    async function loadTransactions(): Promise<void> {
-      const { data } = await api.get('/transactions');
+    const fetchData = async (): Promise<void> => {
+      const {
+        data: { transactions: transactionsFromApi, balance: balanceFromApi },
+      } = await api.get('/transactions');
 
-      const formattedTransactions = data.transactions.map(
+      const formattedTransactions = transactionsFromApi.map(
         (transaction: Transaction) => ({
           ...transaction,
           formattedValue: `${
@@ -50,16 +52,16 @@ const Dashboard: React.FC = () => {
       );
 
       const formattedBalance = {
-        income: formatValue(data.balance.income),
-        outcome: formatValue(data.balance.outcome),
-        total: formatValue(data.balance.total),
+        income: formatValue(balanceFromApi.income),
+        outcome: formatValue(balanceFromApi.outcome),
+        total: formatValue(balanceFromApi.total),
       };
 
       setTransactions(formattedTransactions);
       setBalance(formattedBalance);
-    }
+    };
 
-    loadTransactions();
+    fetchData();
   }, []);
 
   return (

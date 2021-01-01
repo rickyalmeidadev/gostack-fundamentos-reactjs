@@ -3,15 +3,15 @@ import React, { ReactNode } from 'react';
 import Dropzone from 'react-dropzone';
 import { DropContainer, UploadMessage } from './styles';
 
-interface UploadProps {
+type UploadProps = {
   onUpload: Function;
-}
+};
 
-const Upload: React.FC<UploadProps> = ({ onUpload }: UploadProps) => {
-  function renderDragMessage(
+const Upload: React.FC<UploadProps> = ({ onUpload }) => {
+  const renderDragMessage = (
     isDragActive: boolean,
     isDragRejest: boolean,
-  ): ReactNode {
+  ): ReactNode => {
     if (!isDragActive) {
       return (
         <UploadMessage>Selecione ou arraste o arquivo aqui.</UploadMessage>
@@ -23,7 +23,7 @@ const Upload: React.FC<UploadProps> = ({ onUpload }: UploadProps) => {
     }
 
     return <UploadMessage type="success">Solte o arquivo aqui</UploadMessage>;
-  }
+  };
 
   return (
     <>
@@ -31,7 +31,7 @@ const Upload: React.FC<UploadProps> = ({ onUpload }: UploadProps) => {
         accept=".csv, application/vnd.ms-excel, text/csv,"
         onDropAccepted={files => onUpload(files)}
       >
-        {({ getRootProps, getInputProps, isDragActive, isDragReject }): any => (
+        {({ getRootProps, getInputProps, isDragActive, isDragReject }) => (
           <DropContainer
             {...getRootProps()}
             isDragActive={isDragActive}

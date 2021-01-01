@@ -7,11 +7,11 @@ interface FileProps {
   readableSize: string;
 }
 
-interface FileListProps {
+type FileListProps = {
   files: FileProps[];
-}
+};
 
-const FileList: React.FC<FileListProps> = ({ files }: FileListProps) => {
+const FileList: React.FC<FileListProps> = ({ files }) => {
   return (
     <Container>
       {files.map(uploadedFile => (
